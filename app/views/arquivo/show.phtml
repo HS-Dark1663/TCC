@@ -1,0 +1,215 @@
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Arquivos</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/categoria">Arquivos</a></li>
+        <li class="breadcrumb-item active">Listar Arquivo</li>
+    </ol>
+
+
+    <?php
+    // dd($this->view->dados);
+    ?>
+
+    <link rel="stylesheet" href="assets/css/single.css">
+    <link rel='stylesheet' href='https://sachinchoolur.github.io/lightslider/dist/css/lightslider.css'>
+
+    <div class="row">
+
+        <div class="col-md-5 pr-2 mb-5">
+            <div class="card">
+                <div class="demo">
+                    <ul id="lightSlider">
+
+
+                        <?php
+                        foreach ($this->view->imagens as $indice => $imagem) {  ?>
+
+                            <li data-thumb="assets/uploads/imagens/<?= $imagem['nome'] ?>"> <img src="assets/uploads/imagens/<?= $imagem['nome'] ?>" width="400" height="400"> </li>
+
+                        <?php }
+                        $arquivo = $this->view->dados;
+                        ?>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="card mt-2">
+                <h6>Histórico</h6>
+                <div class="d-flex flex-row">
+                    <div class="stars">
+                        <i class="bi bi-binoculars-fill"></i>
+                    </div>
+                    <span class="ml-1 font-weight-bold"><?= isset($arquivo) ? $arquivo['visualizacoes'] : "" ?> visualizações</span>
+                </div>
+                <div class="d-flex flex-row">
+                    <div class="stars">
+                        <i class="bi bi-cloud-download-fill"></i>
+                    </div>
+                    <span class="ml-1 font-weight-bold">50 downloads</span>
+                </div>
+                <hr>
+
+                <!-- <div class="comment-section">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex flex-row align-items-center"> <img src="https://i.imgur.com/o5uMfKo.jpg" class="rounded-circle profile-image">
+                            <div class="d-flex flex-column ml-1 comment-profile">
+                                <div class="comment-ratings"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> </div> <span class="username">Lori Benneth</span>
+                            </div>
+                        </div>
+                        <div class="date"> <span class="text-muted">2 May</span> </div>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex flex-row align-items-center"> <img src="https://i.imgur.com/tmdHXOY.jpg" class="rounded-circle profile-image">
+                            <div class="d-flex flex-column ml-1 comment-profile">
+                                <div class="comment-ratings"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> </div> <span class="username">Timona Simaung</span>
+                            </div>
+                        </div>
+                        <div class="date"> <span class="text-muted">12 May</span> </div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="card">
+
+                <?php
+
+                $qtdeDias = diasDatas($arquivo['created_at'], null);
+
+                if ($qtdeDias == 0) {
+                    $msgTotalDias = ", hoje.";
+                } else if ($qtdeDias == 1) {
+                    $msgTotalDias = ", 1 dia atrás.";
+                } else {
+                    $msgTotalDias = ", " . $qtdeDias . " dias atrás.";
+
+                }
+
+                ?>
+
+                <div class="d-flex flex-row align-items-center mb-1"> <i class="fa fa-calendar-check-o"></i> <span class="ml-1">Postado por <?= isset($arquivo) ? $arquivo['usernome'] . ' ' . $arquivo['usersobrenome'] : "";?><?= $msgTotalDias; ?></span> </div>
+
+
+                <div class="about">
+
+                    <h1 class="fw-bold fs-4"><?= isset($arquivo) ? strtoupper($arquivo['titulo']) : "" ?></h1>
+
+                </div>
+
+                <hr>
+
+                <div class="product-description">
+                    <!-- <div><span class="font-weight-bold">Color:</span><span> blue</span></div>
+                    <div class="my-color"> <label class="radio"> <input type="radio" name="gender" value="MALE" checked> <span class="red"></span> </label> <label class="radio"> <input type="radio" name="gender" value="FEMALE"> <span class="blue"></span> </label> <label class="radio"> <input type="radio" name="gender" value="FEMALE"> <span class="green"></span> </label> <label class="radio"> <input type="radio" name="gender" value="FEMALE"> <span class="orange"></span> </label> </div> -->
+
+
+                    <!-- [id] => 50
+            [id_usuario] => 1
+            [id_categoria] => 4
+            [titulo] => Chaveiro
+            [descricao] => Chaveiro do batman
+            [espessura_mm] => 3
+                    [arquivo] => 9c5dffb0de3f8b1de1496bbc2698c28dDINOSSAURO3mm.dxf
+                [extensao] => dxf
+                [tamanho] => 1461560
+                [visualizacoes] => 0
+                    [ativo] => 1
+                    [created_at] => 2023-06-01 20:21:07
+                    [categoria] => Chaveiros
+                    [usernome] => Fabio
+                    [usersobrenome] => Faria -->
+
+
+                    <div class="mt-2"> <span class="font-weight-bold">Descrição</span>
+                        <p><?= isset($arquivo) ? $arquivo['descricao'] : "" ?></p>
+
+                        <div class="bullets">
+                            <div class="d-flex align-items-center"> <span class="dot"></span> <span class="bullet-text">Categoria: <?= isset($arquivo) ? $arquivo['categoria'] : "" ?></span> </div>
+                            <div class="d-flex align-items-center"> <span class="dot"></span> <span class="bullet-text">Tipo: <?= isset($arquivo) ? $arquivo['extensao'] : "" ?></span> </div>
+                            <div class="d-flex align-items-center"> <span class="dot"></span> <span class="bullet-text">Tamanho: <?= isset($arquivo) ? converteByteToMega($arquivo['tamanho']) : "" ?></span> </div>
+                            <div class="d-flex align-items-center"> <span class="dot"></span> <span class="bullet-text">Espessura: <?= isset($arquivo) ? $arquivo['espessura_mm'] . 'mm' : "" ?></span> </div>
+                        </div>
+                    </div>
+                    <!-- <div class="mt-2"> <span class="font-weight-bold">Store</span> </div>
+                    <div class="d-flex flex-row align-items-center"> <img src="https://i.imgur.com/N2fYgvD.png" class="rounded-circle store-image">
+                        <div class="d-flex flex-column ml-1 comment-profile">
+                            <div class="comment-ratings"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> </div> <span class="username">Rare Boutique</span> <small class="followers">25K Followers</small>
+                        </div>
+                    </div> -->
+                </div>
+
+
+
+                <div class="buttons">
+                    <?php
+
+
+                    // Exemplo de uso da função
+                    $caminhoArquivo = 'assets/uploads/arquivos/';
+                    $nomeArquivo = $arquivo['arquivo'];
+
+                    $linkDownload = downloadArquivo($caminhoArquivo, $nomeArquivo);
+
+                    if ($linkDownload) {
+                    ?>
+                        <a class="" href="<?= $linkDownload; ?>"><button class="btn btn-outline-warning btn-long cart">Baixar o arquivo</button> </a>
+                    <?php
+                    } else {
+                        echo 'Arquivo não encontrado.';
+                    }
+
+                    ?>
+
+
+                </div>
+                <div class="card mt-2"> <span>Similar items:</span>
+                    <div class="similar-products mt-2 d-flex flex-row">
+                        <div class="card border p-1" style="width: 9rem;margin-right: 3px;"> <img src="https://i.imgur.com/KZpuufK.jpg" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h6 class="card-title">$1,999</h6>
+                            </div>
+                        </div>
+                        <div class="card border p-1" style="width: 9rem;margin-right: 3px;"> <img src="https://i.imgur.com/GwiUmQA.jpg" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h6 class="card-title">$1,699</h6>
+                            </div>
+                        </div>
+                        <div class="card border p-1" style="width: 9rem;margin-right: 3px;"> <img src="https://i.imgur.com/c9uUysL.jpg" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h6 class="card-title">$2,999</h6>
+                            </div>
+                        </div>
+                        <div class="card border p-1" style="width: 9rem;margin-right: 3px;"> <img src="https://i.imgur.com/kYWqL7k.jpg" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h6 class="card-title">$3,999</h6>
+                            </div>
+                        </div>
+                        <div class="card border p-1" style="width: 9rem;"> <img src="https://i.imgur.com/DhKkTrG.jpg" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h6 class="card-title">$999</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js'></script>
+        <script src='https://sachinchoolur.github.io/lightslider/dist/js/lightslider.js'></script>
+        <script>
+            $('#lightSlider').lightSlider({
+                gallery: true,
+                item: 1,
+                loop: true,
+                slideMargin: 0,
+                thumbItem: 9
+            });
+        </script>
+
+
+
+
+    </div>

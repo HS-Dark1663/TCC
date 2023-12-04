@@ -1,0 +1,42 @@
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Categorias</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/usuario">Categorias</a></li>
+        <li class="breadcrumb-item active">Cadastrar</li>
+    </ol>
+
+    <!-- Formulario para cadastro do novo usuário -->
+
+    <?php if (isset($this->view->status['status']) && $this->view->status['status']  == "ERROR") { ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>MENSAGEM: </strong> <?= $this->view->status['msg'] ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php } ?>
+
+    <?php if (isset($this->view->status['status']) && $this->view->status['status']  == "SUCCESS") { ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>MENSAGEM: </strong> <?= $this->view->status['msg'] ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php } ?>
+
+    <form action="/salvar_categoria" method="POST" enctype="multipart/form-data">
+
+        <!-- Dados do usuário -->
+        <div class="row">
+            <div class="col-12 col-md-8 mb-3">
+                <label for="nome" class="form-label">Nome</label>
+                <input type="text" class="form-control" name="nome" value="<?= isset($this->view->tempUsuario['nome']) ? $this->view->tempUsuario['nome'] : ""; ?>" id="nome" title="digite o nome do usuário" required>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row mt-3">
+            <div class="col-12 col-md-6 mb-3">
+                <input class="btn btn-primary" type="submit" value="Salvar" />
+            </div>
+        </div>
+    </form>
+</div>

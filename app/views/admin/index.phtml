@@ -1,0 +1,34 @@
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Dashboard</h1>
+    <?php 
+        echo '<p>' . getData() . '</p>'; 
+    ?>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/usuario">Dashboard</a></li>
+        <li class="breadcrumb-item active">Index</li>
+    </ol>
+
+    <div class="row">
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Total de <a href="/usuario">usuários</a>
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                <?= $this->view->qtdeUsuarios; ?>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="bi bi-person-bounding-box text-gray-400 fs-2"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

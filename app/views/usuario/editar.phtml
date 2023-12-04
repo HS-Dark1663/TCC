@@ -1,0 +1,108 @@
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Usuários</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/usuario">Usuários</a></li>
+        <li class="breadcrumb-item active">Editar</li>
+    </ol>
+
+
+    <?php if (isset($this->view->status['status']) && $this->view->status['status']  == "ERROR") { ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>MENSAGEM: </strong> <?= $this->view->status['msg'] ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php } ?>
+
+    <?php if (isset($this->view->status['status']) && $this->view->status['status']  == "SUCCESS") { ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>MENSAGEM: </strong> <?= $this->view->status['msg'] ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php } ?>
+
+
+
+    <form action="/usuario_atualizar" method="POST" enctype="multipart/form-data">
+
+        <!-- Dados do usuário -->
+        <div class="row">
+            <div class="col-12 col-md-8 mb-3">
+                <label for="nome" class="form-label">Nome</label>
+                <input type="text" class="form-control" name="nome" value="<?= isset($this->view->dados[0]['nome']) ? $this->view->dados[0]['nome'] : ""; ?>" id="nome" title="digite o nome do usuário" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-8 mb-3">
+                <label for="sobrenome" class="form-label">Sobrenome</label>
+                <input type="text" class="form-control" name="sobrenome" value="<?= isset($this->view->dados[0]['sobrenome']) ? $this->view->dados[0]['sobrenome'] : ""; ?>" id="sobrenome" title="digite o sobrenome do usuário" required>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md-8 mb-3">
+                <label for="file_imagem" class="form-label">Envie um arquivo de imagem (Opcional)</label>
+                <input type="file" name="file_imagem" id="file_imagem" class="form-control" accept="image/*">
+            </div>
+        </div>
+
+        <!-- dados de login -->
+        <div class="row">
+            <div class="col-12 col-md-8 mb-3">
+                <label for="email" class="form-label">E-mail</label>
+                <input type="text" class="form-control" name="email" value="<?= isset($this->view->dados[0]['email']) ? $this->view->dados[0]['email'] : ""; ?>" id="email" title="digite o e-mail que será utilizado para login" required>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md-5 mb-3">
+                <label for="senha" class="form-label">Senha</label>
+                <input type="password" class="form-control" name="senha" id="senha" placeholder="Por favor, digite uma nova senha se deseja alterá-la." title="digite a senha do usuário">
+            </div>
+        </div>
+
+        <?php
+        if (isset($this->view->dados[0]['id'])) {
+            if ($this->view->dados[0]['id'] === $_SESSION['id']) {
+        ?>
+                <input type="hidden" name="tipo" value="<?= isset($this->view->dados[0]['tipo']) ? $this->view->dados[0]['tipo'] : ""; ?>" />
+            <?php
+            } else { ?>
+                <?php
+                $tipo = isset($this->view->dados[0]['tipo']) ? $this->view->dados[0]['tipo'] : '';
+                ?>
+
+                <div class="row">
+                    <div class="col-12 col-md-5 mb-3">
+                        <label for="tipo" class="form-label">Tipo de usuário</label>
+                        <select class="form-select" name="tipo" aria-label="Default select example">
+                            <option value="" <?= $tipo == '' ? 'selected' : ''; ?>>Escolha uma opção</option>
+                            <option value="Padrão" <?= $tipo == 'Padrão' ? 'selected' : ''; ?>>Padrão</option>
+                            <option value="Administrador" <?= $tipo == 'Administrador' ? 'selected' : ''; ?>>Administrador</option>
+                            <option value="Master" <?= $tipo == 'Master' ? 'selected' : ''; ?>>Master</option>
+
+
+                        </select>
+                    </div>
+                </div>               
+
+        <?php
+            }
+        }
+
+        ?>
+
+        <hr>
+
+        <div class="row mt-3">
+            <div class="col-12 col-md-6 mb-3">
+                <input type="hidden" name="senha_atual" value="<?= isset($this->view->dados[0]['senha']) ? $this->view->dados[0]['senha'] : ""; ?>" />
+                <input type="hidden" name="email_atual" value="<?= isset($this->view->dados[0]['email']) ? $this->view->dados[0]['email'] : ""; ?>" />
+                <input type="hidden" name="id" value="<?= isset($this->view->dados[0]['id']) ? $this->view->dados[0]['id'] : ""; ?>" />
+                <input class="btn btn-primary" type="submit" value="Atualizar" />
+            </div>
+        </div>
+    </form>
+
+
+
+</div>

@@ -1,0 +1,121 @@
+<?php
+// registros da página atual
+$aquivos = $this->view->dados;
+
+// Cálculo do total de páginas
+$totalPaginas =  $this->view->totalPaginas;
+?>
+
+<section class="text-center">
+
+    <h4 class="mb-5"><strong>Vetores gratuitos para corte em máquinas CNC</strong></h4>
+
+    <?php
+    if ($totalPaginas > 0) {
+    ?>
+
+        <div class="row " data-masonry='{"percentPosition": true }'>        
+        
+            <?php foreach ($this->view->dados as $indice => $arquivo) {
+                $img = $arquivo['nome'] != "" ? $arquivo['nome'] : "noImage.png";
+                
+            ?>
+
+                <div class="col-lg-3 col-md-12 mb-4">
+                    <div class="card">
+                        <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                            <img src="assets/uploads/imagens/<?php echo $img; ?>" class="img-fluid" height="300" />
+                            <a href="/show?ref=<?php echo $arquivo['id']; ?>">
+                                <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                            </a>
+                        </div>
+                        <div class="card-body text-start">
+
+                            <h5 class="card-title"><?php echo $arquivo['titulo']; ?></h5>
+                            <h6 class="card-subtitle mb-2 text-muted fs-6">Formato: <?php echo strtoupper($arquivo['extensao']); ?></h6>
+                            <h6 class="card-subtitle mb-2 text-muted fs-6">Tipo: Gratuito</h6>
+                            <p class="card-text">
+                                <?php // echo $arquivo['descricao']; 
+                                ?>
+                            </p>
+                            <!-- <a href="#" class="btn btn-primary">Baixar</a> -->
+                        </div>
+                    </div>
+                </div>
+
+            <?php } ?>
+        </div>
+
+        <!-- Links de paginação -->
+
+        <?php
+        $pag = isset($_GET['pagina']) > 1 ? $_GET['pagina'] - 1 : 1;
+
+        // dd($this->view->totalPaginas);
+
+        $pg = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+
+        $totalPag = $pg < $this->view->totalPaginas ? $pg + 1 : $pg;
+
+        // dd($_GET['pagina']);
+        ?>
+
+
+        <nav class="my-4 paginationn" aria-label="...">
+            <ul class="pagination pagination-circle justify-content-center">
+                <li class="page-item">
+                    <a class="page-link" href="javascript:toTop(<?= $pag; ?>);" tabindex="-1" aria-disabled="true">Previous</a>
+                </li>
+
+                <?php for ($i = 1; $i <= $totalPaginas; $i++) : ?>
+                    <?php
+                    $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+                    ?>
+                    <li class="page-item <?= $pagina == $i ? 'active' : '' ?>">
+                        <!-- <a class="page-link" href="?pagina=<?php // echo $i; 
+                                                                ?>" onclick="teste"> -->
+                        <a class="page-link" href="javascript:toTop(<?php echo $i; ?>);" onclick="teste">
+                            <?php
+                            echo $i;
+                            ?>
+                        </a>
+                    </li>
+                <?php endfor; ?>
+
+                <li class="page-item">
+                    <a class="page-link" href="javascript:toTop(<?= $totalPag; ?>);">Next</a>
+                </li>
+            </ul>
+        </nav>
+
+    <?php
+    } else {
+    ?>
+        <section class="page_404">
+
+            <div class="row d-flex justify-content-center">
+
+                <div class="col-sm-5 col-sm-offset-1  text-center">
+                    <div class="four_zero_four_bg">
+                        <h1 class="text-center fs-1">Que pena :(</h1>
+                    </div>
+
+                    <div class="contant_box_404">
+                        <h3 class="h2">
+                            A busca não retornou registros.
+                        </h3>
+
+                        <p>Não desanime temos milhares de outros vetores!</p>
+
+                        <a href="/" class="btn btn-primary">Ver todos</a>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+    <?php
+    }
+    ?>
+
+</section>

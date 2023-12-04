@@ -1,0 +1,225 @@
+<?php
+// $arquivo = $this->view->dados;
+// $categoria = $this->view->categorias;
+// dd($categoria);
+// dd($this->view->dados);
+
+?>
+
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Arquivos</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/categoria">Arquivos</a></li>
+        <li class="breadcrumb-item active">Editar</li>
+    </ol>
+
+
+    <?php if (isset($this->view->status['status']) && $this->view->status['status']  == "ERROR") { ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>MENSAGEM: </strong> <?= $this->view->status['msg'] ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php } ?>
+
+    <?php if (isset($this->view->status['status']) && $this->view->status['status']  == "SUCCESS") { ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>MENSAGEM: </strong> <?= $this->view->status['msg'] ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php } ?>
+
+    <!-- Dados do usuário -->
+    <!-- <div class="row">
+            <div class="col-12 col-md-8 mb-3">
+                <label for="nome" class="form-label">Nome</label>
+                <input type="text" class="form-control" name="nome" value="<?php // isset($this->view->dados[0]['nome']) ? $this->view->dados[0]['nome'] : ""; 
+                                                                            ?>" id="nome" title="digite o nome da categoria" required>
+            </div>
+        </div> -->
+
+    <?php
+
+    if (isset($this->view->tempArquivo)) {
+        $arquivo = $this->view->tempArquivo;
+    } else if ($this->view->dados) {
+        $arquivo = $this->view->dados;
+    }
+
+    // dd($arquivo);
+
+    if (isset($arquivo)) {
+        $titulo     = $arquivo['titulo'];
+        $id_categoria  = $arquivo['id_categoria'];
+        $descricao  = $arquivo['descricao'];
+
+        // dd($arquivo);
+    }
+
+
+
+
+
+
+
+    // [id] => 50
+    // [id_usuario] => 1
+    // [id_categoria] => 4
+
+    // [descricao] => Chaveiro do batman
+    // [espessura_mm] => 3
+    // [arquivo] => 9c5dffb0de3f8b1de1496bbc2698c28dDINOSSAURO3mm.dxf
+    // [extensao] => dxf
+    // [tamanho] => 1461560
+    // [visualizacoes] => 0
+    // [ativo] => 1
+    // [created_at] => 2023-06-01 20:21:07
+    // [categoria] => Chaveiros
+    // [usernome] => Fabio
+    // [usersobrenome] => Faria
+
+    ?>
+
+    <form action="/arquivo_atualizar" method="POST" enctype="multipart/form-data">
+
+        <!-- Dados do usuário -->
+        <div class="row">
+            <div class="col-12 col-md-8 mb-3">
+                <label for="titulo" class="form-label">Titulo</label>
+                <input type="text" class="form-control" name="titulo" value="<?= $arquivo['titulo']; ?>" required>
+            </div>
+        </div>
+
+        <?php
+
+        // $arquivoEscolhido = isset($this->view->tempArquivo['categoria']) ? $this->view->tempArquivo['categoria'] : "";
+
+
+
+
+        ?>
+
+        <div class="row">
+            <div class="col-12 col-md-8 mb-3">
+                <label for="categoria" class="form-label">Categoria</label>
+                <select class="form-select" name="categoria" aria-label="Default select example">
+
+                    <option value="">Escolha uma opção</option>
+
+                    <?php
+                    foreach ($this->view->categorias as $indice => $categoria) {
+                    ?>
+                        <option value="<?= $categoria['id'] ?>" <?= $arquivo['id_categoria'] == $categoria['id'] ? "selected" : "" ?>><?= $categoria['nome'] ?></option>
+                    <?php
+                    }
+                    ?>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md-8 mb-3">
+                <label for="descricao" class="form-label">Descrição</label>
+                <textarea class="form-control" name="descricao" rows="3"><?= $arquivo['descricao'];; ?></textarea>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md-8 mb-3">
+                <label for="espessura_mm" class="form-label">Espessura do Material</label>
+                <select class="form-select" name="espessura_mm" aria-label="Default select example">
+                    <option value="">Escolha uma opção</option>
+                    <option value="1.0" <?= $arquivo['espessura_mm'] == "1.0"  ? "selected" : ""  ?>>1.0 mm</option>
+                    <option value="2.0" <?= $arquivo['espessura_mm'] == "2.0"  ? "selected" : ""  ?>>2.0 mm</option>
+                    <option value="2.4" <?= $arquivo['espessura_mm'] == "2.4"  ? "selected" : ""  ?>>2.4 mm</option>
+                    <option value="2.8" <?= $arquivo['espessura_mm'] == "2.8"  ? "selected" : ""  ?>>2.8 mm</option>
+                    <option value="3.0" <?= $arquivo['espessura_mm'] == "3.0"  ? "selected" : ""  ?>>3.0 mm</option>
+                    <option value="4.0" <?= $arquivo['espessura_mm'] == "4.0"  ? "selected" : ""  ?>>4.0 mm</option>
+                    <option value="5.0" <?= $arquivo['espessura_mm'] == "5.0"  ? "selected" : ""  ?>>5.0 mm</option>
+                    <option value="6.0" <?= $arquivo['espessura_mm'] == "6.0"  ? "selected" : ""  ?>>6.0 mm</option>
+                    <option value="8.0" <?= $arquivo['espessura_mm'] == "8.0"  ? "selected" : ""  ?>>8.0 mm</option>
+                    <option value="9.0" <?= $arquivo['espessura_mm'] == "9.0"  ? "selected" : ""  ?>>10.0 mm</option>
+                    <option value="10.0" <?= $arquivo['espessura_mm'] == "10.0" ? "selected" : "" ?>>10.0 mm</option>
+                    <option value="12.0" <?= $arquivo['espessura_mm'] == "12.0" ? "selected" : "" ?>>12.0 mm</option>
+                    <option value="15.0" <?= $arquivo['espessura_mm'] == "15.0" ? "selected" : "" ?>>15.0 mm</option>
+                    <option value="18.0" <?= $arquivo['espessura_mm'] == "18.0" ? "selected" : "" ?>>18.0 mm</option>
+                    <option value="22.0" <?= $arquivo['espessura_mm'] == "22.0" ? "selected" : "" ?>>22.0 mm</option>
+                    <option value="25.0" <?= $arquivo['espessura_mm'] == "25.0" ? "selected" : "" ?>>25.0 mm</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md-8 mb-3">
+                <label for="arquivo" class="form-label">Caso deseja alterar o arquivo, envie outro (.cdr, .dxf, .svg, .ai)</label>
+                <input type="file" name="arquivo" id="arquivo" class="form-control">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md-8 mb-3">
+                <label for="imagem" class="form-label">Envie uma imagem do projeto (.jpeg, .png) - Máximo 5 imagens</label>
+                <input type="file" name="imagem[]" id="imagem" class="form-control" multiple accept="image/*">
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row mt-3">
+            <div class="col-12 col-md-6 mb-3">
+                <input type="hidden" name="titulo_atual" value="<?= $arquivo['titulo']; ?>" />
+                <input type="hidden" name="id" value="<?= $arquivo['id']; ?>" />
+
+                <input class="btn btn-primary" type="submit" value="Atualizar dados" />
+            </div>
+        </div>
+
+
+
+
+    </form>
+
+    <hr>
+
+
+
+    <?php
+    if (isset($this->view->imagens)) {
+
+        $imagens = $this->view->imagens;
+
+        if (count($imagens) > 0) {
+    ?>
+            <div class="row">
+                <span>Imagens cadastradas para este arquivo</span>
+                <div class="mt-3 mb-3 d-flex flex-row">
+
+                    <?php
+
+
+                    foreach ($imagens as $indice => $img) { ?>
+                        <div class="card border p-1" style="width: 9rem;margin-right: 3px;"> <img src="assets/uploads/imagens/<?= $img['nome']; ?>" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <a href="/excluirImg?id=<?= $img['id']; ?>&ida=<?= $img['id_arquivo']; ?>" class="btn btn-danger btn-sm">Excluir</a>
+                            </div>
+                        </div>
+                <?php }
+                }
+
+                ?>
+                </div>
+
+            </div>
+        <?php
+    } else {
+    }
+
+
+        ?>
+
+
+
+
+
+
+</div>

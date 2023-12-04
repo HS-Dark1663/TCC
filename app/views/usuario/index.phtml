@@ -1,0 +1,50 @@
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Usuários</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/usuario">Usuários</a></li>
+        <li class="breadcrumb-item active">Listar todos</li>
+    </ol>
+
+
+
+    <div class="row">
+        <table id="tabela" class="table table-hover" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>E-mail</th>
+                    <th>Nível</th>
+                    <th>Ativo</th>
+                    <th>Cadastrado em</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <?php
+                foreach ($this->view->dados as $indice => $usuario) { ?>
+                    <!-- // echo $produto['id'] . ' - ' . $produto['descricao'] . ' - ' . $produto['preco'];
+                // echo '<br>'; -->
+
+                    <tr>
+                        <td><?= $usuario['nome'] ?></td>
+                        <td><?= $usuario['email'] ?></td>
+                        <td><?= $usuario['tipo'] ?></td>
+                        <td><?= $usuario['ativo'] == 1 ? "Sim" : "Não" ?></td>
+                        <td><?= date('d/m/Y - H:m:s', strtotime($usuario['created_at']))  ?></td>
+                        <td>
+                            <a class="btn btn-secondary btn-sm" href="/usuario_editar?id=<?= $usuario['id']?>" data-toggle="tooltip" data-placement="top" title=""><i class="bi bi-pencil-square"></i></a>
+                            |
+                            <button type="button" class="confirma-delete btn btn-danger btn-sm" value="<?= $usuario['id'] ?>"><i class="bi bi-x-square"></i></a>
+                        </td>
+                    </tr>
+
+                <?php
+                }
+                ?>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+

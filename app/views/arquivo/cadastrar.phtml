@@ -1,0 +1,115 @@
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Arquivos</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/usuario">Arquivos</a></li>
+        <li class="breadcrumb-item active">Cadastrar</li>
+    </ol>
+
+    <!-- Formulario para cadastro do novo arquivo -->
+
+    <?php
+    if (isset($this->view->status['status']) && $this->view->status['status']  == "ERROR") { ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>MENSAGEM: </strong> <?= $this->view->status['msg'] ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php } ?>
+
+    <?php if (isset($this->view->status['status']) && $this->view->status['status']  == "SUCCESS") { ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>MENSAGEM: </strong> <?= $this->view->status['msg'] ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php } ?>
+
+    <form action="/salvar_arquivo" method="POST" enctype="multipart/form-data">
+
+        <!-- Dados do usuário -->
+        <div class="row">
+            <div class="col-12 col-md-8 mb-3">
+                <label for="titulo" class="form-label">Titulo</label>
+                <input type="text" class="form-control" name="titulo" value="<?= isset($this->view->tempArquivo['titulo']) ? $this->view->tempArquivo['titulo'] : ""; ?>" required>
+            </div>
+        </div>
+
+        <?php
+
+        $categoriaEscolhida = isset($this->view->tempArquivo['categoria']) ? $this->view->tempArquivo['categoria'] : "";
+
+        ?>
+
+        <div class="row">
+            <div class="col-12 col-md-8 mb-3">
+                <label for="categoria" class="form-label">Categoria</label>
+                <select class="form-select" name="categoria" aria-label="Default select example">
+
+                    <option value="">Escolha uma opção</option>
+
+                    <?php
+                    foreach ($this->view->dados as $indice => $categoria) {
+                    ?>
+                        <option value="<?= $categoria['id'] ?>" <?= $categoriaEscolhida == $categoria['id'] ? "selected" : "" ?>><?= $categoria['nome'] ?></option>
+                    <?php
+                    }
+                    ?>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md-8 mb-3">
+                <label for="descricao" class="form-label">Descrição</label>
+                <textarea class="form-control" name="descricao" rows="3"><?= isset($this->view->tempArquivo['descricao']) ? $this->view->tempArquivo['descricao'] : ""; ?></textarea>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md-8 mb-3">
+                <label for="espessura_mm" class="form-label">Espessura do Material</label>
+                <select class="form-select" name="espessura_mm" aria-label="Default select example">
+
+                    <option value="">Escolha uma opção</option>                  
+                    <option value="1.0">1.0mm</option>
+                    <option value="2.0">2.0mm</option>
+                    <option value="2.4">2.4mm</option>
+                    <option value="2.8">2.8mm</option>
+                    <option value="3.0">3.0mm</option>
+                    <option value="4.0">4.0mm</option>
+                    <option value="5.0">5.0mm</option>
+                    <option value="6.0">6.0mm</option>
+                    <option value="8.0">8.0mm</option>
+                    <option value="10.0">10.0mm</option>
+                    <option value="12.0">12.0mm</option>
+                    <option value="15.0">15.0mm</option>
+                    <option value="18.0">18.0mm</option>
+                    <option value="22.0">22.0mm</option>
+                    <option value="25.0">25.0mm</option>                    
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md-8 mb-3">
+                <label for="arquivo" class="form-label">Envie o arquivo (.cdr, .dxf, .svg, .ai)</label>
+                <input type="file" name="arquivo" id="arquivo" class="form-control">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md-8 mb-3">
+                <label for="imagem" class="form-label">Envie uma imagem do projeto (.jpeg, .png) - Máximo 5 imagens</label>
+                <input type="file" name="imagem[]" id="imagem" class="form-control" multiple accept="image/*">
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row mt-3">
+            <div class="col-12 col-md-6 mb-3">
+                <input class="btn btn-primary" type="submit" value="Salvar" />
+            </div>
+        </div>
+
+
+    </form>
+</div>.

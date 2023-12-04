@@ -1,0 +1,226 @@
+<?php
+
+use Core\model\Container;
+
+// dd($this->view->dados);
+$arquivoObj = Container::getModel("Arquivo");
+$arquivoObj->addViews($this->view->dados['id']);
+
+$totalDowns = $arquivoObj->totalDowns($this->view->dados['id']);
+
+$arquivo = $this->view->dados;
+?>
+<?php
+// Verifica se o botão de download foi clicado
+if (isset($_POST['btnDownload'])) {
+    // Atualiza a quantidade de downloads no banco de dados
+
+    // dd("POSTFEITO");
+    $caminho = 'assets/uploads/arquivos/';
+    $nomeArquivo = $arquivo['arquivo'];
+
+    $caminhoArquivo = $caminho . $nomeArquivo;
+
+    if (file_exists($caminhoArquivo)) {
+
+        // download($this->view->dados['id'], $this->view->dados['id_usuario'], "192.168.0.1", $this->view->dados['titulo'], $linkDownload);
+
+
+
+        // Define os cabeçalhos para o download
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename=' . $this->view->dados['titulo'] . '.' . $this->view->dados['extensao']);
+        header('Content-Transfer-Encoding: binary');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($caminhoArquivo));
+
+        // Realiza a leitura e envio do arquivo
+        readfile($caminhoArquivo);
+
+        if ($arquivoObj->addDowns($this->view->dados['id'], $this->view->dados['id_usuario'], get_client_ip())) {
+            exit; // Encerra o script após o download do arquivo
+        }
+    }
+}
+
+?>
+
+<section>
+
+    <!-- <h4 class="mb-5"><strong>Exibir dados do arquivo</strong></h4> -->
+
+    <!-- <link rel="stylesheet" href="assets/css/single.css"> -->
+    <link rel='stylesheet' href='https://sachinchoolur.github.io/lightslider/dist/css/lightslider.css'>
+
+    <div class="row">
+
+        <div class="col-md-5 pr-2 mb-5">
+            <div class="card">
+                <div class="demo">
+                    <ul id="lightSlider">
+                        <?php
+                        foreach ($this->view->imagens as $indice => $imagem) {  ?>
+
+                            <li data-thumb="assets/uploads/imagens/<?= $imagem['nome'] ?>"> <img class="imagem" src="assets/uploads/imagens/<?= $imagem['nome'] ?>" width="350" height="350"> </li>
+
+                        <?php }
+
+
+
+                        ?>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="card mt-2">
+                <h6>Histórico</h6>
+                <div class="d-flex flex-row">
+                    <div class="stars">
+                        <i class="bi bi-binoculars-fill"></i>
+                    </div>
+                    <span class="ml-1 font-weight-bold"><?= isset($arquivo) ? $arquivo['visualizacoes'] : "0" ?> visualizações</span>
+                </div>
+                <div class="d-flex flex-row">
+                    <div class="stars">
+                        <i class="bi bi-cloud-download-fill"></i>
+                    </div>
+                    <span class="ml-1 font-weight-bold"> <?= isset($totalDowns) ? $totalDowns : 30 ?> downloads</span>
+                </div>
+                <hr>
+
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="card">
+
+                <?php
+
+                $qtdeDias = diasDatas($arquivo['created_at'], null);
+
+                if ($qtdeDias == 0) {
+                    $msgTotalDias = ", hoje.";
+                } else if ($qtdeDias == 1) {
+                    $msgTotalDias = ", 1 dia atrás.";
+                } else {
+                    $msgTotalDias = ", " . $qtdeDias . " dias atrás.";
+                }
+
+                ?>
+
+                <div class="d-flex flex-row align-items-center mb-1"> <i class="fa fa-calendar-check-o"></i> <span class="ml-1">Postado por <?= isset($arquivo) ? $arquivo['usernome'] . ' ' . $arquivo['usersobrenome'] : ""; ?><?= $msgTotalDias; ?></span> </div>
+
+
+                <div class="about">
+
+                    <h1 class="fw-bold fs-4"><?= isset($arquivo) ? strtoupper($arquivo['titulo']) : "" ?></h1>
+
+                </div>
+
+                <hr>
+
+                <div class="product-description">
+
+
+                    <div class="mt-2"> <span class="font-weight-bold">Descrição</span>
+                        <p><?= isset($arquivo) ? $arquivo['descricao'] : "" ?></p>
+
+
+
+                        <div class="bullets">
+                            <div class="d-flex align-items-center"> <span class="dot"></span> <span class="bullet-text">Categoria: <?= isset($arquivo) ? $arquivo['categoria'] : "" ?></span> </div>
+                            <div class="d-flex align-items-center"> <span class="dot"></span> <span class="bullet-text">Tipo: <?= isset($arquivo) ? $arquivo['extensao'] : "" ?></span> </div>
+                            <div class="d-flex align-items-center"> <span class="dot"></span> <span class="bullet-text">Tamanho: <?= isset($arquivo) ? converteByteToMega($arquivo['tamanho']) : "" ?></span> </div>
+                            <div class="d-flex align-items-center"> <span class="dot"></span> <span class="bullet-text">Espessura: <?= isset($arquivo) ? $arquivo['espessura_mm'] . 'mm' : "" ?></span> </div>
+                        </div>
+                    </div>
+                    <!-- <div class="mt-2"> <span class="font-weight-bold">Store</span> </div>
+                    <div class="d-flex flex-row align-items-center"> <img src="https://i.imgur.com/N2fYgvD.png" class="rounded-circle store-image">
+                        <div class="d-flex flex-column ml-1 comment-profile">
+                            <div class="comment-ratings"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> </div> <span class="username">Rare Boutique</span> <small class="followers">25K Followers</small>
+                        </div>
+                    </div> -->
+                </div>
+
+
+
+                <!-- <div class="buttons"> -->
+                <?php
+
+
+                // Exemplo de uso da função
+                //$caminhoArquivo = 'assets/uploads/arquivos/';
+                //$nomeArquivo = $arquivo['arquivo'];
+
+                // $linkDownload = downloadArquivo($caminhoArquivo, $nomeArquivo);
+
+                // if ($linkDownload) {
+                ?>
+                <!-- <a class="" href="<?php  //echo  $linkDownload; 
+                                        ?>" onclick=""><button class="btn btn-outline-warning btn-long cart">Baixar o arquivo</button> </a> -->
+                <?php
+                //} else {
+                //    echo 'Arquivo não encontrado.';
+                //}
+
+                ?>
+
+
+                <!-- </div> -->
+
+                <div class="buttons">
+                    <form method="post">
+                        <button class="btn btn-outline-warning btn-long cart" type="submit" name="btnDownload">Baixar Arquivo</button>
+                    </form>
+                </div>
+
+
+                <div class="card mt-2"> <span>Veja estes arquivos também:</span>
+                    <div class="similar-products mt-2 d-flex flex-row">
+
+                        <?php
+
+                        if (count($this->view->similares) > 0) {
+                            foreach ($this->view->similares as $indice => $similares) {
+                        ?>
+                                <a href="/show?ref=<?php echo $similares['id']; ?>">
+                                    <div class="card border p-1" style="width: 9rem;margin-right: 3px;"> <img src="assets/uploads/imagens/<?= $similares['nome'] ?>" class="card-img-top" alt="...">
+                                        <div class="card-body">
+                                            <!-- <h6 class="card-title">$1,999</h6> -->
+                                        </div>
+                                    </div>
+                                </a>
+
+                        <?php
+                            }
+                        } else {
+                            echo '0000';
+                        }
+                        ?>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js'></script>
+        <script src='https://sachinchoolur.github.io/lightslider/dist/js/lightslider.js'></script>
+        <script>
+            $('#lightSlider').lightSlider({
+                gallery: true,
+                item: 1,
+                loop: true,
+                slideMargin: 0,
+                thumbItem: 9
+            });
+        </script>
+
+
+
+
+    </div>
+</section>

@@ -1,0 +1,55 @@
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Arquivos</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/categoria">Arquivos</a></li>
+        <li class="breadcrumb-item active">Listar todos</li>
+    </ol>
+
+
+
+    <div class="row">
+        <table id="tabela" class="table table-hover" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Titulo</th>
+                    <th>Descrição</th>
+                    <th>Categoria</th>
+                    <th>Tipo</th>
+                    <th>Tamanho</th>
+                    <th>Cadastrado em</th>
+                    <th>Ações</th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+                <?php
+                // dd($this->view->dados);
+                foreach ($this->view->dados as $indice => $arquivo) { ?>
+                    <!-- // echo $produto['id'] . ' - ' . $produto['descricao'] . ' - ' . $produto['preco'];
+                // echo '<br>'; -->
+
+                    <tr>
+                        <td><?= $arquivo['titulo'] ?></td>
+                        <td><?= mb_strimwidth($arquivo['descricao'], 0, 30, "...") ?></td>
+                        <td><?= $arquivo['categoria'] ?></td>
+                        <td><?= $arquivo['extensao'] ?></td>
+                        <td><?= converteByteToMega($arquivo['tamanho']) ?></td>
+                        <td><?= date('d/m/Y - H:m:s', strtotime($arquivo['created_at']))  ?></td>
+                        <td>
+                            <a class="btn btn-success btn-sm" href="/arquivo_show?id=<?= $arquivo['id'] ?>" data-toggle="tooltip" data-placement="top" title=""><i class="bi bi-eye"></i></a>
+                            |
+                            <a class="btn btn-secondary btn-sm" href="/arquivo_editar?id=<?= $arquivo['id'] ?>" data-toggle="tooltip" data-placement="top" title=""><i class="bi bi-pencil-square"></i></a>
+                            |
+                            <button type="button" class="confirma-delete-arquivo btn btn-danger btn-sm" value="<?= $arquivo['id'] ?>"><i class="bi bi-x-square"></i></a>
+                        </td>
+                    </tr>
+
+                <?php
+                }
+                ?>
+
+            </tbody>
+        </table>
+    </div>
+</div>

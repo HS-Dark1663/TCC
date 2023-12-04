@@ -1,0 +1,48 @@
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Categorias</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/categoria">Categorias</a></li>
+        <li class="breadcrumb-item active">Listar todas</li>
+    </ol>
+
+
+
+    <div class="row">
+        <table id="tabela" class="table table-hover" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Cadastrado por</th>
+                    <th>Ativo</th>
+                    <th>Cadastrado em</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <?php
+                foreach ($this->view->dados as $indice => $categoria) { ?>
+                    <!-- // echo $produto['id'] . ' - ' . $produto['descricao'] . ' - ' . $produto['preco'];
+                // echo '<br>'; -->
+
+                    <tr>
+                        <td><?= $categoria['nome'] ?></td>
+                        <td><?= $categoria['nome_usuario'] . ' ' . $categoria['sobrenome_usuario'] ?></td>
+                        <td><?= $categoria['ativo'] == 1 ? "Sim" : "Não" ?></td>
+                        <td><?= date('d/m/Y - H:m:s', strtotime($categoria['created_at']))  ?></td>
+                        <td>
+                            <a class="btn btn-secondary btn-sm" href="/categoria_editar?id=<?= $categoria['id']?>" data-toggle="tooltip" data-placement="top" title=""><i class="bi bi-pencil-square"></i></a>
+                            |
+                            <button type="button" class="confirma-delete-categoria btn btn-danger btn-sm" value="<?= $categoria['id'] ?>"><i class="bi bi-x-square"></i></a>
+                        </td>
+                    </tr>
+
+                <?php
+                }
+                ?>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
